@@ -9,8 +9,11 @@
 	<div>步驟二：選擇所要計算的檔案</div>
 	<div>步驟三：按下計算</div>
 	<p><input id="myfile" type="file"/></p>
-	<p><input id="button" type="button" value="計算" onclick="clickFunction()"/></p>
-	<div id="fileContent"/></div>
+    <p><input id="button" type="button" value="計算" onclick="clickFunction()"/></p>
+    <p>搜尋關鍵字：<input id="key" type="text" ></p>
+    <div id="fileContent"/></div>
+    <div id="detailContent" hidden/></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script type="text/javascript">
 	window.onload = function () {
     	document.getElementById('myfile').onchange = readFile;
@@ -33,16 +36,19 @@
         var lines = content.split("\n");
     	var length = lines.length;
         var result = "";
+        var phoneTimeDetail = "";
         var date = "";
         var hour = 0;
         var min = 0;
         var sec = 0;
+        var key = document.getElementById('key').value;
+        var keyCount = 0;
         for(i = 0; i < length; i++){
             if(lines[i].substr(0,2)=="20"){
                 date = lines[i];
             }
             if(lines[i].indexOf('通話時間') !== -1){
-                result += date+lines[i]+"</br>";
+                phoneTimeDetail += date+lines[i]+"</br>";
                 var phoneTime = lines[i].substr(lines[i].indexOf('通話時間')+4);
                 var timeArr = phoneTime.split(":");
                 if(timeArr.length==2){
@@ -55,14 +61,29 @@
                     hour += parseInt(timeArr[0]);
                 }
             }
+            if(lines[i].includes(key)){
+                keyCount++;
+            }
         }
+        document.getElementById("detailContent").innerHTML = phoneTimeDetail;
         min = min + parseInt(sec / 60);
         sec = sec % 60;
         hour = hour + parseInt(min / 60);
         min = min % 60;
-        result += "</br>總通話時間</br>共計&nbsp;" + hour + "時" + min + "分" + sec + "秒</br>";
+        result += "</br>總通話時間&nbsp;共計&nbsp;" + hour + "時" + min + "分" + sec + 
+            "秒 <input id='showPhoneDetail' type='button' value='顯示明細' onclick='showPhoneTimeDetailFunction()'/>"+
+            "<input id='hidePhoneDetail' type='button' value='顯示明細' onclick='hidePhoneTimeDetailFunction()'/></br>";
+        if(key != ""){
+            result += "說出'" + key + "' 共 " + keyCount + " 次";
+        }
     	document.getElementById("fileContent").innerHTML = result;
 	}
+    function showPhoneTimeDetailFunction(){
+        $("#detailContent").show();
+    }
+    function hidePhoneTimeDetailFunction(){
+        $("#detailContent").hide();
+    }
 </script>
 </body>
 </html>
