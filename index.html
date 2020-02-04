@@ -1,0 +1,68 @@
+<!DOCTYPEhtml>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+	<title>LINE訊息計算</title>
+</head>
+<body>
+	<div>步驟一：至手機取得以文字檔備份的檔案（.txt）</div>
+	<div>步驟二：選擇所要計算的檔案</div>
+	<div>步驟三：按下計算</div>
+	<p><input id="myfile" type="file"/></p>
+	<p><input id="button" type="button" value="計算" onclick="clickFunction()"/></p>
+	<div id="fileContent"/></div>
+	<script type="text/javascript">
+	window.onload = function () {
+    	document.getElementById('myfile').onchange = readFile;
+	};
+
+	var content = "";
+
+	function readFile() {
+	    file = this.files[0];
+	    var fReader = new FileReader();
+	           
+	    fReader.onload = function (event) {
+	        content = event.target.result;
+	        
+	    };
+	    fReader.readAsText(file);
+	}
+
+	function clickFunction() {
+        var lines = content.split("\n");
+    	var length = lines.length;
+        var result = "";
+        var date = "";
+        var hour = 0;
+        var min = 0;
+        var sec = 0;
+        for(i = 0; i < length; i++){
+            if(lines[i].substr(0,2)=="20"){
+                date = lines[i];
+            }
+            if(lines[i].indexOf('通話時間') !== -1){
+                result += date+lines[i]+"</br>";
+                var phoneTime = lines[i].substr(lines[i].indexOf('通話時間')+4);
+                var timeArr = phoneTime.split(":");
+                if(timeArr.length==2){
+                    sec += parseInt(timeArr[1]);
+                    min += parseInt(timeArr[0]);
+                }
+                if(timeArr.length==3){
+                    sec += parseInt(timeArr[2]);
+                    min += parseInt(timeArr[1]);
+                    hour += parseInt(timeArr[0]);
+                }
+            }
+        }
+        min = min + parseInt(sec / 60);
+        sec = sec % 60;
+        hour = hour + parseInt(min / 60);
+        min = min % 60;
+        result += "</br>總通話時間</br>共計&nbsp;" + hour + "時" + min + "分" + sec + "秒</br>";
+    	document.getElementById("fileContent").innerHTML = result;
+	}
+</script>
+</body>
+</html>
