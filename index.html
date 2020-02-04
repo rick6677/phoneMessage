@@ -12,7 +12,8 @@
     <p><input id="button" type="button" value="計算" onclick="clickFunction()"/></p>
     <p>搜尋關鍵字：<input id="key" type="text" ></p>
     <div id="fileContent"/></div>
-    <div id="detailContent" hidden/></div>
+    <div id="phoneTimeDetailContent" hidden/></div>
+    <div id="phoneTextDetailContent" hidden/></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 	<script type="text/javascript">
 	window.onload = function () {
@@ -37,6 +38,7 @@
     	var length = lines.length;
         var result = "";
         var phoneTimeDetail = "";
+        var phoneTextDetail = "";
         var date = "";
         var hour = 0;
         var min = 0;
@@ -62,27 +64,37 @@
                 }
             }
             if(lines[i].includes(key)){
+                phoneTextDetail += date+lines[i]+"</br>";
                 keyCount++;
             }
         }
-        document.getElementById("detailContent").innerHTML = phoneTimeDetail;
+        document.getElementById("phoneTimeDetailContent").innerHTML = phoneTimeDetail;
+        document.getElementById("phoneTextDetailContent").innerHTML = phoneTextDetail;
         min = min + parseInt(sec / 60);
         sec = sec % 60;
         hour = hour + parseInt(min / 60);
         min = min % 60;
         result += "</br>總通話時間&nbsp;共計&nbsp;" + hour + "時" + min + "分" + sec + 
             "秒 <input id='showPhoneDetail' type='button' value='顯示明細' onclick='showPhoneTimeDetailFunction()'/>"+
-            "<input id='hidePhoneDetail' type='button' value='顯示明細' onclick='hidePhoneTimeDetailFunction()'/></br>";
+            "<input id='hidePhoneDetail' type='button' value='隱藏明細' onclick='hidePhoneTimeDetailFunction()'/></br>";
         if(key != ""){
-            result += "說出'" + key + "' 共 " + keyCount + " 次";
+            result += "說出'" + key + "' 共 " + keyCount + " 次"+
+            "<input id='showPhoneTextDetail' type='button' value='顯示明細' onclick='showPhoneTextDetailFunction()'/>"+
+            "<input id='hidePhoneTextDetail' type='button' value='隱藏明細' onclick='hidePhoneTextDetailFunction()'/>";
         }
     	document.getElementById("fileContent").innerHTML = result;
 	}
     function showPhoneTimeDetailFunction(){
-        $("#detailContent").show();
+        $("#phoneTimeDetailContent").show();
     }
     function hidePhoneTimeDetailFunction(){
-        $("#detailContent").hide();
+        $("#phoneTimeDetailContent").hide();
+    }
+    function showPhoneTextDetailFunction(){
+        $("#phoneTextDetailContent").show();
+    }
+    function hidePhoneTextDetailFunction(){
+        $("#phoneTextDetailContent").hide();
     }
 </script>
 </body>
