@@ -29,8 +29,8 @@ function clickFunction() {
             bonus += ((people_5400 - i) * 540) + ((people_4800 - j) * 480) + transPerformanceToMoney( totalPerformance);
 
             result += "bonus:" + bonus + " 業績:" +  totalPerformance
-                    + " 5400無優惠:" + i+ " 5400有優惠:" + (people_5400-i)
-                    + " 4800無優惠:" + j+ " 4800有優惠:" + (people_4800-j)+"</br>"
+                    + " 5400無優惠:" + i+ "人 5400有優惠:" + (people_5400-i)+"人 "
+                    + " 4800無優惠:" + j+ "人 4800有優惠:" + (people_4800-j)+"人</br>"
         }
     }
 document.getElementById("fileContent").innerHTML = result;
