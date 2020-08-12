@@ -1,0 +1,61 @@
+<!DOCTYPEhtml>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>bonus計算</title>
+</head>
+<body>
+5400 人數：<input type="text" id="price1">
+4800 人數：<input type="text" id="price2">
+840  人數：<input type="text" id="price3">
+</br>
+<input id="button" type="button" value="計算" onclick="clickFunction()">
+<div id="fileContent"/></div>
+<script type="text/javascript">
+function clickFunction() {
+
+    var people_5400 = document.getElementById('price1').value;
+    var people_4800 = document.getElementById('price2').value;
+    var people_840 = document.getElementById('price3').value;
+    var result = "";
+
+    for (i = 0; i <= people_5400; i++) {
+        //i人無績效
+        var performanceFor5400 =  i * 5400 + (people_5400 - i) * 5400 * 0.7;
+        for (j = 0; j <= people_4800; j++) {
+            var bonus = 0;
+            var performanceFor4800 = j * 4800 + (people_4800 - j) * 4800 * 0.7;
+            totalPerformance = performanceFor5400+performanceFor4800+people_840 * 840;
+            bonus += ((people_5400 - i) * 540) + ((people_4800 - j) * 480) + transPerformanceToMoney( totalPerformance);
+
+            result += "bonus:" + bonus + " 業績:" +  totalPerformance
+                    + " 5400無優惠:" + i+ " 5400有優惠:" + (people_5400-i)
+                    + " 4800無優惠:" + j+ " 4800有優惠:" + (people_4800-j)+"</br>"
+        }
+    }
+document.getElementById("fileContent").innerHTML = result;
+}
+function transPerformanceToMoney(performance){
+        var bonus = 0;
+        if (performance > 50000) {
+            bonus += 5000;
+        }
+
+        var comparePerformance = 60000;
+        while (performance >= comparePerformance && comparePerformance < 100000) {
+            bonus += 2000;
+            comparePerformance += 10000;
+        }
+        var comparePerformanceHigh = 100000;
+        while (performance >= comparePerformanceHigh) {
+            bonus += 3000;
+            comparePerformance += 10000;
+            if(comparePerformance>performance){
+                break;
+            }
+        }
+        return bonus;
+}
+</script>
+</body>
+</html>
