@@ -18,6 +18,8 @@ function clickFunction() {
     var people_4800 = document.getElementById('price2').value;
     var people_840 = document.getElementById('price3').value;
     var result = "";
+	var maxBonus = 0;
+	var maxBonusContent = "";
 
     for (i = 0; i <= people_5400; i++) {
         //i人無績效
@@ -27,12 +29,20 @@ function clickFunction() {
             var performanceFor4800 = j * 4800 + (people_4800 - j) * 4800 * 0.7;
             totalPerformance = performanceFor5400+performanceFor4800+people_840 * 840;
             bonus += ((people_5400 - i) * 540) + ((people_4800 - j) * 480) + transPerformanceToMoney( totalPerformance);
+			
+			if(bonus>maxBonus){
+				maxBonus = bonus;
+				maxBonusContent = "bonus:" + bonus + " 業績:" +  totalPerformance
+                    + " 5400無優惠:" + i+ "人 5400有優惠:" + (people_5400-i)+"人 "
+                    + " 4800無優惠:" + j+ "人 4800有優惠:" + (people_4800-j)+"人</br>"
+			}
 
             result += "bonus:" + bonus + " 業績:" +  totalPerformance
                     + " 5400無優惠:" + i+ "人 5400有優惠:" + (people_5400-i)+"人 "
                     + " 4800無優惠:" + j+ "人 4800有優惠:" + (people_4800-j)+"人</br>"
         }
     }
+	result += "</br></br></br>最多bonus</br>"+maxBonusContent
 document.getElementById("fileContent").innerHTML = result;
 }
 function transPerformanceToMoney(performance){
